@@ -11,7 +11,6 @@ from questions.models import Answer, Question
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    """Provide CRUD +L functionality for Question."""
 
     queryset = Question.objects.all().order_by("-created_at")
     serializer_class = QuestionSerializer
@@ -23,7 +22,6 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 
 class AnswerCreateAPIView(generics.CreateAPIView):
-    """Allow users to answer a question instance if they haven't already."""
 
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
@@ -41,7 +39,6 @@ class AnswerCreateAPIView(generics.CreateAPIView):
 
 
 class AnswerRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
-    """Provide *RUD functionality for an answer instance to it's author."""
 
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
@@ -50,7 +47,6 @@ class AnswerRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class AnswerListAPIView(generics.ListAPIView):
-    """Provide the answers queryset of a specific question instance."""
 
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated]
@@ -61,14 +57,12 @@ class AnswerListAPIView(generics.ListAPIView):
 
 
 class AnswerLikeAPIView(APIView):
-    """Allow users to add/remove a like to/from an answer instance."""
 
     serializer_class = AnswerSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = "uuid"
 
     def delete(self, request, uuid):
-        """Remove request.user from the voters queryset of an answer instance."""
         answer = get_object_or_404(Answer, uuid=uuid)
         user = request.user
 
@@ -81,7 +75,6 @@ class AnswerLikeAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, uuid):
-        """Add request.user to the voters queryset of an answer instance."""
         answer = get_object_or_404(Answer, uuid=uuid)
         user = request.user
 
